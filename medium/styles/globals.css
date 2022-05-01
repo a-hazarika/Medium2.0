@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.h-75 {
+    height: 75px;
+}
+
+.min-width-window {
+    width: min(100vw, 80rem);
+}
+
+.bg-animate {
+    transition: background-color 300ms linear;
+}
+
+.color-animate {
+    transition: background-color 200ms linear;
+}

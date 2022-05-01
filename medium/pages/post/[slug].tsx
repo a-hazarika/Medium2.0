@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next'
-import React, { Children } from 'react'
+import React, { Children, useEffect, useState } from 'react'
 import Article from '../../components/Article'
 import Header from '../../components/Header'
 import { sanityClient, urlFor } from '../../sanity'
@@ -7,6 +7,7 @@ import { Post, Comment } from '../../typings'
 import PostProps from '../../interfaces/postprops'
 import NewComment from '../../components/NewComment'
 import Comments from '../../components/Comments'
+import useScrollPosition from '../../hooks/use-scroll-position'
 
 
 // interface Props {
@@ -16,10 +17,27 @@ import Comments from '../../components/Comments'
 
 const Post = ({ post }: PostProps) => {
 
-    const comments  = post.comments
+    const scrollPosition = useScrollPosition();
+
+    const [bgColor, setBgColor] = useState('bg-yellow-400');
+    
+    useEffect(() => {
+        // var position: number = +scrollPosition;
+
+        if (scrollPosition > 100) {
+            setBgColor('bg-white')      
+        }
+        else {
+            setBgColor('bg-yellow-400')
+        }
+    }, [scrollPosition])
+
     return (
         <main>
-            <Header />
+            <div className={`fixed w-full z-10 left-0 bg-animate border-b border-black ${bgColor}`}>
+                <Header scrollPosition={scrollPosition} borderClasses='' />
+            </div>
+            <div className='h-75'></div>
             <Article post={post} />
             <NewComment post={post} />
             <Comments comments={post.comments} />

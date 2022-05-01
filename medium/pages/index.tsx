@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Banner from '../components/Banner'
 import Header from '../components/Header'
+import useScrollPosition from '../hooks/use-scroll-position'
 import { sanityClient, urlFor } from '../sanity'
 import { Post } from '../typings'
 
@@ -12,6 +13,9 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ posts }) => {
+
+  const scrollPosition = useScrollPosition();
+
   return (
     <div className='max-w-7xl mx-auto'>
       <Head>
@@ -19,7 +23,10 @@ const Home: NextPage<Props> = ({ posts }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
+      <div className='fixed w-full z-10 left-0'>
+        <Header scrollPosition={scrollPosition} borderClasses='border-b border-black' />
+      </div>
+      <div className='h-75'></div>
       <Banner />
 
       {/* posts */}
@@ -29,11 +36,11 @@ const Home: NextPage<Props> = ({ posts }) => {
             <div className='border rounded-lg group cursor-pointer overflow-hidden'>
               {
                 post.mainImage && (
-                  <img 
-                  className='h-60 w-full object-cover group-hover:scale-105
+                  <img
+                    className='h-60 w-full object-cover group-hover:scale-105
                   transition-transform duration-200 ease-in-out'
-                  src={urlFor(post.mainImage)?.url()!}
-                     alt="" />
+                    src={urlFor(post.mainImage)?.url()!}
+                    alt="" />
                 )
               }
               <div className='flex justify-between p-5 bg-white'>
@@ -41,9 +48,9 @@ const Home: NextPage<Props> = ({ posts }) => {
                   <p className='text-lg font-bold'>{post.title}</p>
                   <p className='text-xs'>{post.description} by {post.author.name}</p>
                 </div>
-                <img 
+                <img
                   className='h-12 w-12 rounded-full'
-                  src={urlFor(post.author.image).url()!} 
+                  src={urlFor(post.author.image).url()!}
                   alt="" />
               </div>
             </div>
